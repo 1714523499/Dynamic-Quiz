@@ -1,0 +1,31 @@
+
+.answers, #next {
+    display: table;
+    margin: 0 auto;
+
+}
+
+input {
+    float: left;
+    margin-left: -20px;
+    margin-top: 4px;
+
+}
+
+.question{
+    text-align: center;
+}
+
+.quiz{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 50%;
+    height: 30%;
+    margin: auto;
+}
+
+
+
