@@ -1,22 +1,19 @@
-
 .answers, #next {
     display: table;
     margin: 0 auto;
-
 }
 
 input {
     float: left;
     margin-left: -20px;
     margin-top: 4px;
-
 }
 
-.question{
+.question {
     text-align: center;
 }
 
-.quiz{
+.quiz {
     position: absolute;
     top: 0;
     bottom: 0;
