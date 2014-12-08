@@ -1,3 +1,3 @@
 Dynamic Quiz
 ================
-It's a simple JQuery quiz for JavaScript learning purposes
+Simple JQuery quiz for JavaScript learning purposes
