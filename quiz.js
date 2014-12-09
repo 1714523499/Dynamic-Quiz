@@ -1,60 +1,8 @@
 /**
  * Created by oilyenko on 9/16/2014.
  */
-var allQuestions = [
-    {
-        question: "Who is Prime Minister of the United Kingdom?",
-        choices: ["David Cameron", "Gordon Brown", "Winston Churchill", "Tony Blair"],
-        correctAnswer: 0
-    },
-    {
-        question: "Who is the father of Geometry?",
-        choices: ["Aristotle", "Euclid", "Pythagoras", "Kepler"],
-        correctAnswer: 1
-    },
-    {
-        question: "The Homolographic projection has the correct representation of",
-        choices: ["shape", "area", "baring", "distance"],
-        correctAnswer: 1
-    },
-    {
-        question: "The hazards of radiation belts include",
-        choices: ["deterioration of electronic circuits", "damage of solar cells of spacecraft", "adverse effect on living organisms", "All of the above"],
-        correctAnswer: 3
-    },
-    {
-        question: "The great Victoria Desert is located in",
-        choices: ["Canada", "West Africa", "Australia", "North America"],
-        correctAnswer: 2
-    },
-    {
-        question: "Which of the following is tropical grassland?",
-        choices: ["Taiga", "Savannah", "Pampas", "Prairies"],
-        correctAnswer: 1
-    },
-    {
-        question: "With the disintegration of USSR in end 1991, comprised of ____ Union Republics.",
-        choices: ["15", "10", "5", "25"],
-        correctAnswer: 1
-    },
-    {
-        question: "The temperature increases rapidly after",
-        choices: ["ionosphere", "exosphere", "stratosphere", "troposphere"],
-        correctAnswer: 1
-    },
-    {
-        question: "The largest gold producing country in the world(in 2006) is",
-        choices: ["China", "Canada", "South Africa", "USA"],
-        correctAnswer: 2
-    },
-    {
-        question: "The largest country of the world by geographical area is",
-        choices: ["Russia", "Vatican City", "Australia", "USA"],
-        correctAnswer: 1
-    }
-];
 
-
+var allQuestions;
 var i = -1;
 var goNext = (function () {
     return function () {
@@ -71,20 +19,20 @@ var goPrevious = (function () {
     };
 })();
 
-var changeHtml = function (question) {
+var changeHtml = function (obj) {
     $('.question').fadeOut(function () {
-        $(this).text(question.question)
+        $(this).text(obj.question)
     }).add($('input').fadeOut()).add($('label[for=qa]').fadeOut(function () {
-        $(this).html(question.choices[0])
+        $(this).html(obj.choices[0])
     })).add($('label[for=qb]').fadeOut(function () {
-        $(this).html(question.choices[1])
+        $(this).html(obj.choices[1])
     })).add($('label[for=qc]').fadeOut(function () {
-        $(this).html(question.choices[2])
+        $(this).html(obj.choices[2])
     })).add($('label[for=qd]').fadeOut(function () {
-        $(this).html(question.choices[3])
+        $(this).html(obj.choices[3])
     })).fadeIn();
     setTimeout(function () {
-        $('#' + sessionStorage[allQuestions.indexOf(question)]).prop("checked", true);
+        $('#' + sessionStorage[allQuestions.indexOf(obj)]).prop("checked", true);
     }, 600);
 };
 
@@ -94,7 +42,18 @@ var uncheck = function (checkedBox) {
     }, 300);
 };
 
+
 $(document).ready(function () {
+    $.ajax({
+        url: 'questions.json',
+        datatype: 'json',
+        type: 'get',
+        cache: false,
+        async: false,
+        success: function (data) {
+            allQuestions = data.questions;
+        }
+    });
     $(".quiz").hide().delay(400).fadeIn();
     sessionStorage.clear();
     var currentObject = goNext();
