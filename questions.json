@@ -1,0 +1,104 @@
+{
+  "questions": [
+    {
+      "question": "Who is Prime Minister of the United Kingdom?",
+      "choices": [
+        "David Cameron",
+        "Gordon Brown",
+        "Winston Churchill",
+        "Tony Blair"
+      ],
+      "correctAnswer": 0
+    },
+    {
+      "question": "Who is the father of Geometry?",
+      "choices": [
+        "Aristotle",
+        "Euclid",
+        "Pythagoras",
+        "Kepler"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "The Homolographic projection has the correct representation of",
+      "choices": [
+        "shape",
+        "area",
+        "baring",
+        "distance"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "The hazards of radiation belts include",
+      "choices": [
+        "deterioration of electronic circuits",
+        "damage of solar cells of spacecraft",
+        "adverse effect on living organisms",
+        "All of the above"
+      ],
+      "correctAnswer": 3
+    },
+    {
+      "question": "The great Victoria Desert is located in",
+      "choices": [
+        "Canada",
+        "West Africa",
+        "Australia",
+        "North America"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "Which of the following is tropical grassland?",
+      "choices": [
+        "Taiga",
+        "Savannah",
+        "Pampas",
+        "Prairies"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "With the disintegration of USSR in end 1991, comprised of ____ Union Republics.",
+      "choices": [
+        "15",
+        "10",
+        "5",
+        "25"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "The temperature increases rapidly after",
+      "choices": [
+        "ionosphere",
+        "exosphere",
+        "stratosphere",
+        "troposphere"
+      ],
+      "correctAnswer": 1
+    },
+    {
+      "question": "The largest gold producing country in the world(in 2006) is",
+      "choices": [
+        "China",
+        "Canada",
+        "South Africa",
+        "USA"
+      ],
+      "correctAnswer": 2
+    },
+    {
+      "question": "The largest country of the world by geographical area is",
+      "choices": [
+        "Russia",
+        "Vatican City",
+        "Australia",
+        "USA"
+      ],
+      "correctAnswer": 1
+    }
+  ]
+}
