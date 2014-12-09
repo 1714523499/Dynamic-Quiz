@@ -1,6 +1,11 @@
-.answers, #next {
+.answers, .buttons {
     display: table;
     margin: 0 auto;
+}
+
+#next, #back {
+    display: inline-block;
+    margin: 2px;
 }
 
 input {
