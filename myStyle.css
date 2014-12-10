@@ -6,9 +6,11 @@
 #next, #back {
     display: inline-block;
     margin: 2px;
+    table-layout: fixed;
+    border-collapse: collapse;
 }
 
-input {
+input[type=radio] {
     float: left;
     margin-left: -20px;
     margin-top: 4px;
@@ -19,6 +21,7 @@ input {
 }
 
 .quiz {
+    display: none;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -28,6 +31,42 @@ input {
     height: 30%;
     margin: auto;
 }
+
+.loginForm {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 50%;
+    height: 30%;
+    margin: auto;
+    text-align: center;
+    background: white;
+}
+
+#loginButton, #goRegister, #register, #cancel{
+    width: 10%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.registrationForm, .succeed, .greetings {
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 50%;
+    height: 30%;
+    margin: auto;
+    text-align: center;
+    background: white;
+}
+
+
 
 
 
