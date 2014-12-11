@@ -48,7 +48,36 @@ var allQuestions,
             year = 2000;
         }
         document.cookie = "login=" + login + "; expires=Fri, 3 Aug " + year + " 20:47:11 UTC";
-    }
+    },
+
+    saveAnswers = function (login) {
+        var answerString = "";
+        for (var m = 0; m < allQuestions.length; m++) {
+            if (!sessionStorage.getItem(m)) {
+                break;
+            }
+            answerString += sessionStorage.getItem(m) + "~";
+        }
+        if (answerString) {
+            localStorage.setItem(login + "_answers", answerString);
+            alert(localStorage.getItem(login + "_answers"));
+            alert(login + "_answers");
+        }
+        sessionStorage.clear();
+    },
+
+    loadAnswers = function (login) {
+        var answerArray = localStorage.getItem(login + "_answers");
+        alert(answerArray);
+        if (answerArray) {
+            answerArray.split("~").forEach(function (ans, index) {
+                sessionStorage.setItem(index, ans);
+            });
+            localStorage.removeItem(login + "_answers");
+        }
+    },
+
+    globalLogin;
 
 $(document).ready(function () {
 
@@ -78,6 +107,8 @@ $(document).ready(function () {
         loginFirst = "You should enter your login first!",
         login = ("; " + document.cookie).split("; login=").pop().split(";").shift(),
         loginAction = function (login) {
+            globalLogin = login;
+            loadAnswers(login);
             currentObject = goNext();
             var name = localStorage.getItem(login + "_name");
             $message.empty().append("Hello, " + name + "!")
@@ -122,7 +153,7 @@ $(document).ready(function () {
     });
 
     $('#logoffBtn').on('click', function () {
-        sessionStorage.clear();
+        saveAnswers(globalLogin);
         saveLoginAsCookie("");
     });
 
@@ -190,6 +221,7 @@ $(document).ready(function () {
         $signedin.empty().append("You're signed in as " + name);
         $succeed.fadeIn();
         saveLoginAsCookie(login);
+        globalLogin = login;
     });
 
     $('#goToQuiz').on('click', function () {
@@ -262,4 +294,8 @@ $(document).ready(function () {
             changeHtml(currentObject);
         }
     });
+});
+
+$(window).unload(function () {
+    saveAnswers(globalLogin);
 });
