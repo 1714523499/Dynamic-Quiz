@@ -21,7 +21,7 @@ var allQuestions,
 
     changeHtml = function (obj) {
         $('.question').fadeOut(function () {
-            $(this).text(obj.question)
+            $(this).empty().text(obj.question)
         }).add($('input').fadeOut()).add($('label[for=qa]').fadeOut(function () {
             $(this).html(obj.choices[0])
         })).add($('label[for=qb]').fadeOut(function () {
@@ -71,6 +71,9 @@ $(document).ready(function () {
         $registrationForm = $('.registrationForm'),
         $loginForm = $('.loginForm'),
         $succeed = $(".succeed"),
+        $question = $('.question'),
+        $answers = $('.answers'),
+        $buttons = $('.buttons'),
         passwordFirst = "You should enter your login first!",
         loginFirst = "You should enter your login first!",
         login = ("; " + document.cookie).split("; login=").pop().split(";").shift(),
@@ -211,7 +214,7 @@ $(document).ready(function () {
             if (currentObject) {
                 changeHtml(currentObject);
             } else {
-                $('.answers').add('.buttons').fadeOut().remove();
+                $answers.add($buttons).fadeOut();
                 for (var j = 0, all = allQuestions.length, correct = 0; j < all; j++) {
                     var answer;
                     switch (sessionStorage[j]) {
@@ -232,12 +235,22 @@ $(document).ready(function () {
                         correct++;
                     }
                 }
-                $('.question').fadeOut(function () {
+                sessionStorage.clear();
+                $question.fadeOut(function () {
                     $(this).empty().text("You did it!").append("<h5>You have answered correctly " + correct + " of " + all + " questions</h5>")
+                        .append("<button type=\"button\" id=\"startOver\">Start over</button>");
                 }).fadeIn();
             }
         }
     );
+
+    $quiz.on('click', '#startOver', function () {
+        i = -1;
+        $answers.add($buttons).add($question).hide();
+        currentObject = goNext();
+        changeHtml(currentObject);
+        $answers.add($buttons).add($question).fadeIn();
+    });
 
     $('#back').on('click', function () {
         var $checkedBox = $('input[name=q]:radio:checked');
@@ -249,8 +262,4 @@ $(document).ready(function () {
             changeHtml(currentObject);
         }
     });
-});
-
-$(window).on('unload', function () {
-    sessionStorage.clear();
 });
