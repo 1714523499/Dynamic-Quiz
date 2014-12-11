@@ -2,52 +2,48 @@
  * Created by oilyenko on 9/16/2014.
  */
 
-var allQuestions;
-var i = -1;
-var goNext = (function () {
-    return function () {
-        return allQuestions[++i];
+var allQuestions,
+    i = -1,
+    goNext = (function () {
+        return function () {
+            return allQuestions[++i];
+        };
+    })(),
+
+    goPrevious = (function () {
+        return function () {
+            if (i === 0) {
+                return allQuestions[i];
+            }
+            return allQuestions[--i];
+        };
+    })(),
+
+    changeHtml = function (obj) {
+        $('.question').fadeOut(function () {
+            $(this).text(obj.question)
+        }).add($('input').fadeOut()).add($('label[for=qa]').fadeOut(function () {
+            $(this).html(obj.choices[0])
+        })).add($('label[for=qb]').fadeOut(function () {
+            $(this).html(obj.choices[1])
+        })).add($('label[for=qc]').fadeOut(function () {
+            $(this).html(obj.choices[2])
+        })).add($('label[for=qd]').fadeOut(function () {
+            $(this).html(obj.choices[3])
+        })).fadeIn();
+        setTimeout(function () {
+            $('#' + sessionStorage[allQuestions.indexOf(obj)]).prop("checked", true);
+        }, 600);
+    },
+
+    uncheck = function (checkedBox) {
+        setTimeout(function () {
+            checkedBox.removeAttr('checked');
+        }, 300);
     };
-})();
-
-var goPrevious = (function () {
-    return function () {
-        if (i === 0) {
-            return allQuestions[i];
-        }
-        return allQuestions[--i];
-    };
-})();
-
-var changeHtml = function (obj) {
-    $('.question').fadeOut(function () {
-        $(this).text(obj.question)
-    }).add($('input').fadeOut()).add($('label[for=qa]').fadeOut(function () {
-        $(this).html(obj.choices[0])
-    })).add($('label[for=qb]').fadeOut(function () {
-        $(this).html(obj.choices[1])
-    })).add($('label[for=qc]').fadeOut(function () {
-        $(this).html(obj.choices[2])
-    })).add($('label[for=qd]').fadeOut(function () {
-        $(this).html(obj.choices[3])
-    })).fadeIn();
-    setTimeout(function () {
-        $('#' + sessionStorage[allQuestions.indexOf(obj)]).prop("checked", true);
-    }, 600);
-};
-
-var uncheck = function (checkedBox) {
-    setTimeout(function () {
-        checkedBox.removeAttr('checked');
-    }, 300);
-};
-
-var saveFormState = function (e) {
-    e.preventDefault();
-    e.stopImmediatePropagation();
-}
 
 $(document).ready(function () {
+
     $.ajax({
         url: 'questions.json',
         datatype: 'json',
@@ -58,118 +54,139 @@ $(document).ready(function () {
             allQuestions = data.questions;
         }
     });
-    sessionStorage.clear();
-    var currentObject;
-    $('.loginForm').submit(function (e) {
+    var currentObject,
+        $quiz = $(".quiz"),
+        $greet = $(".greetings"),
+        $logoff = $('.logoff'),
+        $message = $('.message'),
+        $signedin = $('.signedIn'),
+        $registrationForm = $('.registrationForm'),
+        $loginForm = $('.loginForm'),
+        $succeed = $(".succeed"),
+        passwordFirst = "You should enter your login first!",
+        loginFirst = "You should enter your login first!",
+        login = ("; " + document.cookie).split("; login=").pop().split(";").shift(),
+        loginAction = function (login) {
+            currentObject = goNext();
+            var name = localStorage.getItem(login + "_name");
+            $message.empty().append("Hello, " + name + "!")
+                .append($("<p>")).append("Welcome again!");
+            $loginForm.hide().replaceWith($greet);
+            $greet.fadeIn().delay(500).fadeOut();
+            changeHtml(currentObject);
+            $signedin.empty().append("You're signed in as " + name);
+            setTimeout(function () {
+                $quiz.fadeIn("slow");
+                $logoff.fadeIn("slow");
+            }, 1500);
+        };
+
+
+    if (localStorage.getItem(login + "_name")) {
+        loginAction(login);
+    }
+
+    $loginForm.submit(function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
         var login = $(this).find('input[name=login]').val();
         if (!login) {
-            alert("You should enter your login first!");
-            saveFormState(e);
+            alert(loginFirst);
             return false;
         }
         var password = $(this).find('input[name=password]').val();
         if (!password) {
-            alert("You should enter your password first!");
-            saveFormState(e);
+            alert(passwordFirst);
             return false;
         }
         if (!localStorage.getItem(login + "_name") || localStorage.getItem(login + "_password") !== password) {
             alert("Incorrect username or password");
-            saveFormState(e);
             return false;
         }
-        var checked = $(this).find('#remember_me').attr("checked");
-        saveFormState(e);
-        currentObject = goNext();
-        var $quiz = $(".quiz");
-        var $greet = $(".greetings");
-        $('.message').append("Hello, " + localStorage.getItem(login + "_name") + "!").append($("<p>")).append("Welcome again!");
-        $(this).fadeOut("slow").replaceWith($greet);
-        $greet.fadeIn().delay(500).fadeOut();
-        changeHtml(currentObject);
-        setTimeout(function () {
-            $quiz.fadeIn("slow");
-        }, 2000);
+
+        if ($("input[id=remember_me]:checked").length > 0) {
+            document.cookie = "login=" + login + "; expires=Fri, 3 Aug 2016 20:47:11 UTC";
+        }
+        loginAction(login);
+    });
+
+    $('#logoffBtn').on('click', function () {
+        sessionStorage.clear();
+        document.cookie = "login=; expires=Fri, 3 Aug 2000 20:47:11 UTC";
     });
 
     $('#goRegister').on('click', function () {
         $(this).closest('form').find("input[type=text], textarea").val("");
-        $('.loginForm').hide().delay(100);
-        $('.registrationForm').fadeIn();
+        $loginForm.hide();
+        $registrationForm.fadeIn();
     });
 
     $('#cancel').on('click', function () {
         $(this).closest('form').find("input[type=text], textarea").val("");
-        $('.registrationForm').hide().delay(100);
-        $('.loginForm').fadeIn();
+        $registrationForm.hide();
+        $loginForm.fadeIn();
     });
 
 
-    $('.registrationForm').submit(function (e) {
+    $registrationForm.submit(function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
         var name = $(this).find('input[name=rname]').val();
         if (!name) {
             alert("You should enter your name!");
-            saveFormState(e);
             return false;
         }
         var login = $(this).find('input[name=rlogin]').val();
         if (!login) {
-            alert("You should enter your login!");
-            saveFormState(e);
+            alert(loginFirst);
             return false;
         }
         var password = $(this).find('input[name=rpassword]').val();
         if (!password) {
-            alert("You should enter your password!");
-            saveFormState(e);
+            alert(passwordFirst);
             return false;
         }
         var cpassword = $(this).find('input[name=cpassword]').val();
         if (!cpassword) {
             alert("You should enter your password confirmation!");
-            saveFormState(e);
             return false;
         }
 
         if (password !== cpassword) {
             alert("Your password and password confirmation does not match!");
-            saveFormState(e);
             return false;
         }
 
-        if (login.length < 5){
+        if (login.length < 5) {
             alert("You specified too short login! Use at least 5 symbols");
-            saveFormState(e);
             return false;
         }
 
-        if (password.length < 5){
+        if (password.length < 5) {
             alert("You specified too short password! Use at least 5 symbols");
-            saveFormState(e);
             return false;
         }
 
         if (localStorage.getItem(login + "_name")) {
             alert("User with such username already exists! Please choose another one.");
-            saveFormState(e);
             return false;
         }
 
         localStorage.setItem(login + "_password", password);
         localStorage.setItem(login + "_name", name);
-        saveFormState(e);
-        var $succeed = $(".succeed");
-        $('.message').append("Congratulations, " + name + "!").append($("<p>")).append("You have successfully registered to Quiz!");
+        $message.empty().append("Congratulations, " + name + "!").append($("<p>")).append("You have successfully registered to Quiz!");
         $(this).fadeOut("slow").replaceWith($succeed);
+        $signedin.empty().append("You're signed in as " + name);
         $succeed.fadeIn();
     });
 
     $('#goToQuiz').on('click', function () {
         currentObject = goNext();
-        $(".succeed").fadeOut();
+        $succeed.fadeOut();
         changeHtml(currentObject);
         setTimeout(function () {
-            $(".quiz").fadeIn("slow");
+            $quiz.fadeIn("slow");
+            $logoff.fadeIn("slow");
         }, 800);
     });
 
@@ -185,7 +202,7 @@ $(document).ready(function () {
             if (currentObject) {
                 changeHtml(currentObject);
             } else {
-                $('.answers').add('.buttons').remove();
+                $('.answers').add('.buttons').fadeOut().remove();
                 for (var j = 0, all = allQuestions.length, correct = 0; j < all; j++) {
                     var answer;
                     switch (sessionStorage[j]) {
@@ -206,9 +223,8 @@ $(document).ready(function () {
                         correct++;
                     }
                 }
-                $('.answers').add('.buttons').fadeOut().remove();
                 $('.question').fadeOut(function () {
-                    $(this).text("You did it!").append("<h5>You have answered correctly " + correct + " of " + all + " questions</h5>")
+                    $(this).empty().text("You did it!").append("<h5>You have answered correctly " + correct + " of " + all + " questions</h5>")
                 }).fadeIn();
             }
         }
@@ -224,4 +240,8 @@ $(document).ready(function () {
             changeHtml(currentObject);
         }
     });
+});
+
+$(window).on('unload', function () {
+    sessionStorage.clear();
 });
