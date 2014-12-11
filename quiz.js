@@ -40,7 +40,15 @@ var allQuestions,
         setTimeout(function () {
             checkedBox.removeAttr('checked');
         }, 300);
-    };
+    },
+
+    saveLoginAsCookie = function (login) {
+        var year = 2016;
+        if (!login) {
+            year = 2000;
+        }
+        document.cookie = "login=" + login + "; expires=Fri, 3 Aug " + year + " 20:47:11 UTC";
+    }
 
 $(document).ready(function () {
 
@@ -105,14 +113,14 @@ $(document).ready(function () {
         }
 
         if ($("input[id=remember_me]:checked").length > 0) {
-            document.cookie = "login=" + login + "; expires=Fri, 3 Aug 2016 20:47:11 UTC";
+            saveLoginAsCookie(login);
         }
         loginAction(login);
     });
 
     $('#logoffBtn').on('click', function () {
         sessionStorage.clear();
-        document.cookie = "login=; expires=Fri, 3 Aug 2000 20:47:11 UTC";
+        saveLoginAsCookie("");
     });
 
     $('#goRegister').on('click', function () {
@@ -178,6 +186,7 @@ $(document).ready(function () {
         $(this).fadeOut("slow").replaceWith($succeed);
         $signedin.empty().append("You're signed in as " + name);
         $succeed.fadeIn();
+        saveLoginAsCookie(login);
     });
 
     $('#goToQuiz').on('click', function () {
