@@ -13,26 +13,30 @@ var allQuestions, globalLogin,
         goPrevious: (function () {
             return function () {
                 if (this.position === 0) {
-                    return allQuestions[this.position];
+                    return allQuestions[this.position]
                 }
                 return allQuestions[--this.position]
             }
         })()
     }
 
-$(document).ready(function () {
-    $.ajax({
-        url: 'questions.json',
-        datatype: 'json',
-        type: 'get',
-        cache: false,
-        async: false,
-        success: function (data) {
-            allQuestions = data.questions
-        }
-    })
+$.ajax({
+    url: 'questions.json',
+    datatype: 'json',
+    type: 'get',
+    cache: false,
+    async: false,
+    success: function (data) {
+        allQuestions = data.questions
+    }
+})
 
+$(document).ready(function () {
     var currentObject,
+        passwordFirst = "You should enter your password first!",
+        loginFirst = "You should enter your login first!",
+        login = ("; " + document.cookie).split("; login=").pop().split(";").shift(),
+
         $quiz = $(".quiz"),
         $greet = $(".greetings"),
         $logoff = $('.logoff'),
@@ -43,12 +47,7 @@ $(document).ready(function () {
         $succeed = $(".succeed"),
         $question = $('.question'),
         $answers = $('.answers'),
-        $buttons = $('.buttons'),
-
-        passwordFirst = "You should enter your login first!",
-        loginFirst = "You should enter your login first!",
-        login = ("; " + document.cookie).split("; login=").pop().split(";").shift()
-
+        $buttons = $('.buttons')
 
     if (localStorage.getItem(login + "_name")) {
         loginAction(login)
@@ -102,7 +101,7 @@ $(document).ready(function () {
         var name = $(this).find('input[name=rname]').val()
         if (!name) {
             alert("You should enter your name!")
-            return false;
+            return false
         }
         var login = $(this).find('input[name=rlogin]').val()
         if (!login) {
@@ -232,7 +231,7 @@ $(document).ready(function () {
         setTimeout(function () {
             $.unblockUI()
         }, 500)
-    });
+    })
 
     $('#back').on('click', function (e) {
         sessionStorage[allQuestions.indexOf(currentObject)] = $(
@@ -278,9 +277,9 @@ $(document).ready(function () {
         $loginForm.hide().replaceWith($greet)
         $greet.fadeIn().delay(500).fadeOut()
         changeHtml(currentObject)
-        $signedin.empty().append("You're signed in as " + name);
+        $signedin.empty().append("You're signed in as " + name)
         setTimeout(function () {
-            $quiz.add($logoff).fadeIn("slow");
+            $quiz.add($logoff).fadeIn("slow")
         }, 1500)
     }
 
@@ -296,7 +295,7 @@ $(document).ready(function () {
         var answerArray = localStorage.getItem(login + "_answers")
         if (answerArray) {
             answerArray.split("~").forEach(function (ans, index) {
-                sessionStorage.setItem(index, ans);
+                sessionStorage.setItem(index, ans)
             })
             localStorage.removeItem(login + "_answers")
         }
