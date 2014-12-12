@@ -1,23 +1,23 @@
 .answers, .buttons {
     display: table;
-    margin: 0 auto;
+    margin: 0 auto
 }
 
 #next, #back {
     display: inline-block;
     margin: 2px;
     table-layout: fixed;
-    border-collapse: collapse;
+    border-collapse: collapse
 }
 
 input[type=radio] {
     float: left;
     margin-left: -20px;
-    margin-top: 4px;
+    margin-top: 4px
 }
 
 .question {
-    text-align: center;
+    text-align: center
 }
 
 .quiz {
@@ -29,7 +29,7 @@ input[type=radio] {
     right: 0;
     width: 50%;
     height: 30%;
-    margin: auto;
+    margin: auto
 }
 
 .loginForm {
@@ -43,13 +43,13 @@ input[type=radio] {
     height: 30%;
     margin: auto;
     text-align: center;
-    background: white;
+    background: white
 }
 
-#loginButton, #goRegister, #register, #cancel{
+#loginButton, #goRegister, #register, #cancel {
     width: 10%;
     table-layout: fixed;
-    border-collapse: collapse;
+    border-collapse: collapse
 }
 
 .registrationForm, .succeed, .greetings {
@@ -63,18 +63,28 @@ input[type=radio] {
     height: 30%;
     margin: auto;
     text-align: center;
-    background: white;
+    background: white
 }
 
 .logoff {
     display: none;
-    position:fixed;
-    right:10px;
-    top:5px;
-    text-align: center;
+    position: fixed;
+    right: 10px;
+    top: 5px;
+    text-align: center
 }
 
+.red {
+    color: red
+}
 
+.blue {
+    color: blue
+}
+
+.green {
+    color: green
+}
 
 
 
