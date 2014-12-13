@@ -212,9 +212,7 @@ $(document).ready(function () {
                     }).fadeIn()
                 }
             }
-            setTimeout(function () {
-                $.unblockUI()
-            }, 100)
+            unBlockUIinMsec(180)
         }
     )
 
@@ -227,9 +225,7 @@ $(document).ready(function () {
         currentObject = MOVE.goNext()
         changeHtml(currentObject)
         $answers.add($buttons).fadeIn()
-        setTimeout(function () {
-            $.unblockUI()
-        }, 500)
+        unBlockUIinMsec(500)
     })
 
     $('#back').on('click', function (e) {
@@ -243,9 +239,7 @@ $(document).ready(function () {
         }
         $.blockUI({message: null})
         changeHtml(currentObject)
-        setTimeout(function () {
-            $.unblockUI()
-        }, 100)
+        unBlockUIinMsec(100)
     })
 
     function changeHtml(obj) {
@@ -298,6 +292,12 @@ $(document).ready(function () {
             })
             localStorage.removeItem(login + "_answers")
         }
+    }
+
+    function unBlockUIinMsec(msec){
+        setTimeout(function () {
+            $.unblockUI()
+        }, msec)
     }
 })
 
