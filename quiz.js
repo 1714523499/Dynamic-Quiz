@@ -1,24 +1,8 @@
 /**
- * Created by oilyenko on 9/16/2014.
+ * Created by ailyenko on 9/16/2014.
  */
 
-var allQuestions, globalLogin, currentObject,
-    MOVE = {
-        position: -1,
-        goNext: (function () {
-            return function () {
-                return allQuestions[++this.position]
-            }
-        })(),
-        goPrevious: (function () {
-            return function () {
-                if (this.position === 0) {
-                    return allQuestions[this.position]
-                }
-                return allQuestions[--this.position]
-            }
-        })()
-    }
+var allQuestions, globalLogin, currentObject
 
 $.ajax({
     url: 'questions.json',
@@ -35,6 +19,22 @@ $(document).ready(function () {
     var passwordFirst = "You should enter your password first!",
         loginFirst = "You should enter your login first!",
         login = ("; " + document.cookie).split("; login=").pop().split(";").shift(),
+        MOVE = {
+            position: -1,
+            goNext: (function () {
+                return function () {
+                    return allQuestions[++this.position]
+                }
+            })(),
+            goPrevious: (function () {
+                return function () {
+                    if (this.position === 0) {
+                        return allQuestions[this.position]
+                    }
+                    return allQuestions[--this.position]
+                }
+            })()
+        },
 
         $quiz = $(".quiz"),
         $greet = $(".greetings"),
