@@ -2,7 +2,7 @@
  * Created by oilyenko on 9/16/2014.
  */
 
-var allQuestions, globalLogin,
+var allQuestions, globalLogin, currentObject,
     MOVE = {
         position: -1,
         goNext: (function () {
@@ -32,8 +32,7 @@ $.ajax({
 })
 
 $(document).ready(function () {
-    var currentObject,
-        passwordFirst = "You should enter your password first!",
+    var passwordFirst = "You should enter your password first!",
         loginFirst = "You should enter your login first!",
         login = ("; " + document.cookie).split("; login=").pop().split(";").shift(),
 
@@ -307,7 +306,11 @@ $(window).unload(function () {
 })
 
 function saveAnswers(login) {
-    var answerString = ""
+    var id = $('input[name=q]:radio:checked').attr('id'),
+        answerString = ""
+    if (id && sessionStorage[allQuestions.indexOf(currentObject)] !== id) {
+        sessionStorage[allQuestions.indexOf(currentObject)] = id;
+    }
     for (var m = 0; m < allQuestions.length; m++) {
         if (!sessionStorage.getItem(m)) {
             break
