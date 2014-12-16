@@ -5,7 +5,7 @@
 var allQuestions, globalLogin, currentObject
 
 $.ajax({
-    url: 'questions.json',
+    url: 'resources/questions.json',
     datatype: 'json',
     type: 'get',
     cache: false,
@@ -219,7 +219,7 @@ $(document).ready(function () {
 
     $quiz.on('click', '#startOver', function () {
         $.blockUI({
-            message: "<h3><img src=\"busy.gif\" /> Reloading questions...</h3>"
+            message: "<h3><img src=\"resources/busy.gif\" /> Reloading questions...</h3>"
         })
         MOVE.position = -1
         currentObject = MOVE.goNext()
