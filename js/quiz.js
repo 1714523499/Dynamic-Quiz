@@ -65,7 +65,8 @@ $(document).ready(function () {
             alert(passwordFirst)
             return false
         }
-        if (!localStorage.getItem(login + "_name") || localStorage.getItem(login + "_password") !== password) {
+        if (!localStorage.getItem(login + "_name") ||
+            localStorage.getItem(login + "_password") !== password) {
             alert("Incorrect username or password")
             return false
         }
@@ -140,7 +141,8 @@ $(document).ready(function () {
 
         localStorage.setItem(login + "_password", password)
         localStorage.setItem(login + "_name", name)
-        $message.empty().append("Congratulations, " + name + "!").append($("<p>")).append("You have successfully registered to Quiz!")
+        $message.empty().append("Congratulations, " + name + "!")
+            .append($("<p>")).append("You have successfully registered to Quiz!")
         $(this).fadeOut("slow").replaceWith($succeed)
         $signedin.empty().append("You're signed in as " + name)
         $succeed.fadeIn()
@@ -203,12 +205,9 @@ $(document).ready(function () {
                             color = "red"
                         }
                         $(this).empty().text(finalMsg + localStorage.getItem(globalLogin + "_name") + "!")
-                            .append(
-                            "<h4>Your score is <div class=\"" + color + "\"><b>" + scores.toFixed(0) + "</b></div> points!</h4>"
-                        )
-                            .append(
-                            "<button type=\"button\" id=\"startOver\">Start over</button>"
-                        )
+                            .append("<h4>Your score is <div class=\"" + color + "\"><b>"
+                            + scores.toFixed(0) + "</b></div> points!</h4>")
+                            .append("<button type=\"button\" id=\"startOver\">Start over</button>")
                     }).fadeIn()
                 }
             }
@@ -294,7 +293,7 @@ $(document).ready(function () {
         }
     }
 
-    function unBlockUIinMsec(msec){
+    function unBlockUIinMsec(msec) {
         setTimeout(function () {
             $.unblockUI()
         }, msec)
